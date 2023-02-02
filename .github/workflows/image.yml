@@ -1,0 +1,17 @@
+name: ActImage
+on:
+  push:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Login in Docker Registry
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Docker pull and push
+        run: |
+          docker pull ghcr.io/catthehacker/ubuntu:act-latest
+          docker tag  ghcr.io/catthehacker/ubuntu:act-latest jaronnie/ubuntu:act-latest    
+          docker push jaronnie/ubuntu:act-latest
