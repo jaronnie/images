@@ -1,4 +1,7 @@
 FROM openjdk:8u322-jdk AS jdk
+
+LABEL MAINTAINER=jaronnie
+
 ENV MAVEN_VERSION=3.6.3
 ENV MAVEN_HOME=/opt/maven
 
