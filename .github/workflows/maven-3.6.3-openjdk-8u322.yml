@@ -2,14 +2,14 @@ name: java-maven-3.6.3-openjdk-8u322
 on:
   push:
     paths:
-      - ./java/maven-3.6.3-openjdk-8u322/Dockerfile
+      - './java/maven-3.6.3-openjdk-8u322/Dockerfile'
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-        
+
       - name: Login in Docker Registry
         uses: docker/login-action@v1
         with:
