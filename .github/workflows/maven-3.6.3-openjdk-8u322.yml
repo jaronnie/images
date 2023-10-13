@@ -1,6 +1,10 @@
 name: java-maven-3.6.3-openjdk-8u322
 on:
   push:
+    branches:
+      - 'main'
+    paths:
+      - 'java/maven-3.6.3-openjdk-8u322/**'  
 
 jobs:
   build:
@@ -15,19 +19,7 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Check Dockerfile changes
-        id: file_changes
-        uses: dorny/paths-filter@v2
-        with:
-          filters: |
-            changes:
-              - 'java/maven-3.6.3-openjdk-8u322/Dockerfile'
-
       - name: Docker build and push
         run: |
-          if [ "${{ steps.file_changes.outputs.changes }}" == "true" ]; then
             docker build -t jaronnie/java:maven-3.6.3-openjdk-8u322 -f java/maven-3.6.3-openjdk-8u322/Dockerfile .
             docker push jaronnie/java:maven-3.6.3-openjdk-8u322
-          else
-            echo "No changes in Dockerfile. Skipping Docker build and push."
-          fi
