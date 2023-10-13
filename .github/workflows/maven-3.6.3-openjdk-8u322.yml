@@ -24,7 +24,7 @@ jobs:
 
       - name: Docker pull and push
         run: |
-          if [ "${{ steps.file_changes.outputs.any_changes }}" == "true" ]; then
+          if [ "${{ steps.file_changes.outputs.changes }}" == "true" ]; then
             docker build -t jaronnie/java:maven-3.6.3-openjdk-8u322 -f java/maven-3.6.3-openjdk-8u322/Dockerfile .
             docker push jaronnie/java:maven-3.6.3-openjdk-8u322
           else
