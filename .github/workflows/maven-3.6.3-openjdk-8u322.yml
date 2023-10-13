@@ -17,13 +17,15 @@ jobs:
 
       - name: Check Dockerfile changes
         id: file_changes
-        run: |
-            changed_files=$(git diff --name-only "${{ github.event.before }}" "${{ github.sha }}")
-            echo "::set-output name=has_changes::$(echo "$changed_files" | grep -q "java/maven-3.6.3-openjdk-8u322/Dockerfile" && echo "true" || echo "false")"
+        uses: dorny/paths-filter@v2
+        with:
+          filters: |
+            changes:
+              - 'java/maven-3.6.3-openjdk-8u322/Dockerfile'
 
       - name: Docker build and push
         run: |
-          if [ "${{ steps.file_changes.outputs.has_changes }}" == "true" ]; then
+          if [ "${{ steps.file_changes.outputs.changes }}" == "true" ]; then
             docker build -t jaronnie/java:maven-3.6.3-openjdk-8u322 -f java/maven-3.6.3-openjdk-8u322/Dockerfile .
             docker push jaronnie/java:maven-3.6.3-openjdk-8u322
           else
