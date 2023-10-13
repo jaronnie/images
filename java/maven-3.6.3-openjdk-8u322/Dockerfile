@@ -6,6 +6,7 @@ ENV MAVEN_VERSION=3.6.3
 ENV MAVEN_HOME=/opt/maven
 
 # repo
+# test update
 
 # 安装 Maven
 RUN wget https://archive.apache.org/dist/maven/maven-3/$MAVEN_VERSION/binaries/apache-maven-$MAVEN_VERSION-bin.tar.gz && \
