@@ -5,6 +5,7 @@ on:
       - 'main'
     paths:
       - 'elasticsearch/v6.8.24/**'  
+      - '.github/workflows/elasticsearch-v6.8.24-arm64.yml'
 
 jobs:
   build:
