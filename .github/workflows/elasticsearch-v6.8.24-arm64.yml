@@ -28,12 +28,6 @@ jobs:
           cd elasticsearch/v6.8.24
 
       - name: Build and push
-        uses: docker/build-push-action@v4
-        with:
-          context: .
-          file: ./Dockerfile
-          platforms: |
-            linux/arm64
-          push: true
-          tags: |
-            jaronnie/elasticsearch:v6.8.24
+        run: |
+          cd elasticsearch/v6.8.24
+          docker buildx build --platform linux/arm64 -t jaronnie/elasticsearch:v6.8.24 . --push
