@@ -23,11 +23,15 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+      - name: Change directory
+        run: |
+          cd elasticsearch/v6.8.24
+
       - name: Build and push
         uses: docker/build-push-action@v4
         with:
           context: .
-          file: ./elasticsearch/v6.8.24/Dockerfile
+          file: ./Dockerfile
           platforms: |
             linux/arm64
           push: true
