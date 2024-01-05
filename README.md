@@ -17,3 +17,11 @@ docker pull jaronnie/maven-3.6.3-openjdk-8u322
 ```shell
 docker pull jaronnie/elasticsearch:v6.8.24-arm64
 ```
+
+## metrics-server
+
+### metrics-server-v0.5.2
+
+```shell
+docker pull metrics-server:v0.5.2
+```
