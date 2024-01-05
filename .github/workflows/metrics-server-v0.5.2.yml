@@ -3,6 +3,8 @@ on:
   push:
     branches:
       - 'main'
+    paths:
+      - '.github/workflows/metrics-server-v0.5.2.yml'       
 
 jobs:
   build:
