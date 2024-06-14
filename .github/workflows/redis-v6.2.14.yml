@@ -19,6 +19,7 @@ jobs:
       - name: Login in AliYun Registry
         uses: docker/login-action@v1
         with:
+          registry: registry.cn-hangzhou.aliyuncs.com
           username: ${{ secrets.ALIYUNHUB_USERNAME }}
           password: ${{ secrets.ALIYUNHUB_TOKEN }}
 
