@@ -26,5 +26,5 @@ jobs:
       - name: Build and push
         run: |
           docker pull sonatype/nexus3:3.53.0
-          docker tag sonatype/nexus3:3.53.0 registry.cn-hangzhou.aliyuncs.com/jaronnie/sonatype/nexus3:3.53.0
-          docker push registry.cn-hangzhou.aliyuncs.com/jaronnie/sonatype/nexus3:3.53.0
+          docker tag sonatype/nexus3:3.53.0 registry.cn-hangzhou.aliyuncs.com/jaronnie/nexus3:3.53.0
+          docker push registry.cn-hangzhou.aliyuncs.com/jaronnie/nexus3:3.53.0
