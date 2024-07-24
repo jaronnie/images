@@ -1,0 +1,30 @@
+name: ubuntu-act-latest
+on:
+  push:
+    branches:
+      - 'main'
+    paths:
+      - '.github/workflows/ubuntu-act-latest.yml'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Docker BuildX
+        uses: docker/setup-buildx-action@v2
+
+      - name: Login in AliYun Registry
+        uses: docker/login-action@v1
+        with:
+          registry: registry.cn-hangzhou.aliyuncs.com
+          username: ${{ secrets.ALIYUNHUB_USERNAME }}
+          password: ${{ secrets.ALIYUNHUB_TOKEN }}
+
+      - name: Build and push
+        run: |
+          docker pull catthehacker/ubuntu:act-latest
+          docker tag catthehacker/ubuntu:act-latest registry.cn-hangzhou.aliyuncs.com/jaronnie/ubuntu:act-latest
+          docker push registry.cn-hangzhou.aliyuncs.com/jaronnie/ubuntu:act-latest

@@ -68,7 +68,7 @@ func add(_ *cobra.Command, args []string) error {
 		return err
 	}
 
-	filename := fmt.Sprintf("%s-%s.yml", split[0], split[1])
+	filename := fmt.Sprintf("%s-%s.yml", filepath.Base(split[0]), split[1])
 
 	err = os.WriteFile(filepath.Join(".github", "workflows", filename), tpl, 0755)
 	return err
