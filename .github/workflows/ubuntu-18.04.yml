@@ -1,0 +1,30 @@
+name: ubuntu-18.04
+on:
+  push:
+    branches:
+      - 'main'
+    paths:
+      - '.github/workflows/ubuntu-18.04.yml'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Docker BuildX
+        uses: docker/setup-buildx-action@v2
+
+      - name: Login in AliYun Registry
+        uses: docker/login-action@v1
+        with:
+          registry: registry.cn-hangzhou.aliyuncs.com
+          username: ${{ secrets.ALIYUNHUB_USERNAME }}
+          password: ${{ secrets.ALIYUNHUB_TOKEN }}
+
+      - name: Build and push
+        run: |
+          docker pull ubuntu:18.04
+          docker tag ubuntu:18.04 registry.cn-hangzhou.aliyuncs.com/jaronnie/ubuntu:18.04
+          docker push registry.cn-hangzhou.aliyuncs.com/jaronnie/ubuntu:18.04
