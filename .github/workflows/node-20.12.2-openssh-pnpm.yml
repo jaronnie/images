@@ -1,4 +1,4 @@
-name: java-maven-3.6.3-openjdk-8u322
+name: node-20.12.2-openssh-pnpm
 on:
   push:
     branches:
