@@ -1,4 +1,4 @@
-name: ubuntu-18.04
+name: Build and Push Multi-arch Ubuntu 18.04
 on:
   push:
     branches:
@@ -7,24 +7,57 @@ on:
       - '.github/workflows/ubuntu-18.04.yml'
 
 jobs:
-  build:
+  build-multi-arch:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Set up Docker BuildX
-        uses: docker/setup-buildx-action@v2
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
 
-      - name: Login in AliYun Registry
-        uses: docker/login-action@v1
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
         with:
-          registry: registry.cn-hangzhou.aliyuncs.com
-          username: ${{ secrets.ALIYUNHUB_USERNAME }}
-          password: ${{ secrets.ALIYUNHUB_TOKEN }}
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.ACCESS_TOKEN }}
 
-      - name: Build and push
+#      - name: Enable Docker CLI experimental features
+#        run: |
+#          mkdir -p ~/.docker
+#          echo '{"experimental":"enabled"}' > ~/.docker/config.json
+
+      - name: Pull, tag and push amd64 image
         run: |
-          docker pull ubuntu:18.04
-          docker tag ubuntu:18.04 registry.cn-hangzhou.aliyuncs.com/jaronnie/ubuntu:18.04
-          docker push registry.cn-hangzhou.aliyuncs.com/jaronnie/ubuntu:18.04
+          docker pull --platform linux/amd64 ubuntu:18.04
+          docker tag ubuntu:18.04 ghcr.io/jaronnie/ubuntu:18.04-amd64
+          docker push ghcr.io/jaronnie/ubuntu:18.04-amd64
+
+      - name: Pull, tag and push arm64 image
+        run: |
+          docker pull --platform linux/arm64 ubuntu:18.04
+          docker tag ubuntu:18.04 ghcr.io/jaronnie/ubuntu:18.04-arm64
+          docker push ghcr.io/jaronnie/ubuntu:18.04-arm64
+
+      - name: Create and push manifest
+        run: |
+          docker manifest create ghcr.io/jaronnie/ubuntu:18.04 \
+            --amend ghcr.io/jaronnie/ubuntu:18.04-amd64 \
+            --amend ghcr.io/jaronnie/ubuntu:18.04-arm64
+
+          docker manifest annotate ghcr.io/jaronnie/ubuntu:18.04 \
+            ghcr.io/jaronnie/ubuntu:18.04-amd64 \
+            --arch amd64 --os linux
+
+          docker manifest annotate ghcr.io/jaronnie/ubuntu:18.04 \
+            ghcr.io/jaronnie/ubuntu:18.04-arm64 \
+            --arch arm64 --os linux
+
+          docker manifest push ghcr.io/jaronnie/ubuntu:18.04
+
+      - name: Clean up
+        run: |
+          docker manifest rm ghcr.io/jaronnie/ubuntu:18.04
+          docker image rm ghcr.io/jaronnie/ubuntu:18.04-amd64
+          docker image rm ghcr.io/jaronnie/ubuntu:18.04-arm64
